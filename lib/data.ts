@@ -21,6 +21,23 @@ async function getBundles(bundleRoom: string) {
 
 export {getBundles};
 
+async function getSeasons(seasonName: string) {
+  try {
+    const seasons = await prisma.objects.findMany(
+      {
+        where: {
+          season: {contains: seasonName,},
+        },
+      },
+    );
+    return seasons;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export { getSeasons };
+
 async function getObjects() {
   try {
     const objects = await prisma.objects.findMany();
