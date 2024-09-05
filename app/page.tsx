@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
-import { getObjects, getBundles, getSeasons } from "../lib/data"
+import { getObjects, getBundles } from "../lib/data"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,10 +29,6 @@ export default async function Home() {
   const board = await getBundles('Bulletin Board');
   const vault = await getBundles('Vault');
   const joja = await getBundles('Abandoned JojaMart');
-  const spring = await getSeasons('Spring');
-  const summer = await getSeasons('Summer');
-  const fall = await getSeasons('Fall');
-  const winter = await getSeasons('Winter');
   var dict: Record <string,boolean> = {};
 
   for (let i=0; i<Objects.length; i++) {
@@ -41,7 +37,7 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col p-24">
-      <SortBy Objects={Objects} craftRoom = {craftRoom} pantry = {pantry} tank = {tank} boiler = {boiler} board = {board} vault = {vault} joja = {joja} spring = {spring} summer = {summer} fall = {fall} winter = {winter} dict = {dict} />
+      <SortBy Objects={Objects} craftRoom = {craftRoom} pantry = {pantry} tank = {tank} boiler = {boiler} board = {board} vault = {vault} joja = {joja} dict = {dict} />
     </main>
 
   );

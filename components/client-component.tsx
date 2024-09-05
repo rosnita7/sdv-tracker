@@ -1,6 +1,7 @@
 'use client';
 
-import { Key, useState } from 'react';
+import React, { Key, useState } from 'react';
+import Select from 'react-select'
 import Image from 'next/image';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -10,78 +11,71 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 
-function SortBy({ Objects, craftRoom, pantry, tank, boiler, board, vault, joja, spring, summer, fall, winter, dict }: { Objects: any, craftRoom: any, pantry: any, tank: any, boiler: any, board: any, vault: any, joja: any, spring: any, summer: any, fall: any, winter: any, dict: Record<string, boolean> }) {
-    const [selected, setSelected] = useState('bundle');
+const seasonOptions = [
+    {value: 'Spring', label: 'Spring'},
+    {value: 'Summer', label: 'Summer'},
+    {value: 'Fall', label: 'Fall'},
+    {value: 'Winter', label:'Winter'}
+]
+
+const typeOptions = [
+    {value: 'Farming', label: 'Farming'},
+    {value: 'Foraging', label: 'Foraging'},
+    {value: 'Mining', label: 'Mining'},
+    {value: 'Fishing', label: 'Fishing'},
+    {value: 'Combat', label: 'Combat'},
+    {value: 'Other', label: 'Other'},
+]
+
+function SortBy({ Objects, craftRoom, pantry, tank, boiler, board, vault, joja, dict }: { Objects: any, craftRoom: any, pantry: any, tank: any, boiler: any, board: any, vault: any, joja: any, dict: Record<string, boolean> }) {
+    const [selectedSeason, setSelectedSeason] = useState([]);
+    const [selectedType, setSelectedType] = useState([]);
+
+
+    const handleSeasonChange = (selectedOptions: any) => {
+        const selectedValues = selectedOptions ? selectedOptions.map((option: any) => option.value) : [];
+        setSelectedSeason(selectedValues);
+    }
+
+    const handleTypeChange = (selectedOptions: any) => {
+        const selectedValues = selectedOptions ? selectedOptions.map((option: any) => option.value) : [];
+        setSelectedType(selectedValues);
+    }
+
     return (
         <div>
-            <div className="justify-end flex">
-                <label htmlFor="sort">Sort by: </label>
-                <select name="sort" id="sortBy" defaultValue="bundle" onChange={e => setSelected(e.target.value)}>
-                    <option value='bundle'>Bundle</option>
-                    <option value='season'>Season</option>
-                </select>
+            <div className="justify-end flex items-center space-x-[10px]">
+                <Select 
+                placeholder='Season'
+                closeMenuOnSelect={false}
+                isMulti
+                className='basic-multi-select my-react-select-container'
+                classNamePrefix="my-react-select"
+                options={seasonOptions}
+                onChange = {handleSeasonChange}/>
+
+                
+
+                <Select 
+                placeholder='Type'
+                closeMenuOnSelect={false}
+                isMulti
+                className='basic-multi-select my-react-select-container'
+                classNamePrefix="my-react-select"
+                options={typeOptions}
+                onChange = {handleTypeChange}/>
             </div>
 
-            {selected == 'bundle' && <Accordion type='multiple' className="w-full">
-                <RoomItem room={craftRoom} Objects={Objects} dict={dict} />
-                <RoomItem room={pantry} Objects={Objects} dict={dict} />
-                <RoomItem room={tank} Objects={Objects} dict={dict} />
-                <RoomItem room={boiler} Objects={Objects} dict={dict} />
-                <RoomItem room={board} Objects={Objects} dict={dict} />
-                <RoomItem room={vault} Objects={Objects} dict={dict} />
-                <RoomItem room={joja} Objects={Objects} dict={dict} />
-            </Accordion>}
+            <Accordion type='multiple' className="w-full">
+                <RoomItem room={craftRoom} Objects={Objects} season={selectedSeason} type = {selectedType} dict={dict} />
+                <RoomItem room={pantry} Objects={Objects} season={selectedSeason} type = {selectedType} dict={dict} />
+                <RoomItem room={tank} Objects={Objects} season={selectedSeason} type = {selectedType} dict={dict} />
+                <RoomItem room={boiler} Objects={Objects} season={selectedSeason} type = {selectedType} dict={dict} />
+                <RoomItem room={board} Objects={Objects} season={selectedSeason} type = {selectedType} dict={dict} />
+                <RoomItem room={vault} Objects={Objects} season={selectedSeason} type = {selectedType} dict={dict} />
+                <RoomItem room={joja} Objects={Objects} season={selectedSeason} type = {selectedType} dict={dict} />
+            </Accordion>
 
-            {selected == 'season' && <Accordion type='multiple' className="w-full">
-                <AccordionItem value="spring">
-                    <AccordionTrigger className="text-xl font-bold">Spring</AccordionTrigger>
-                    <AccordionContent>
-                        <RoomItem room={craftRoom} Objects={Objects} season={'Spring'} dict={dict} />
-                        <RoomItem room={pantry} Objects={Objects} season={'Spring'} dict={dict} />
-                        <RoomItem room={tank} Objects={Objects} season={'Spring'} dict={dict} />
-                        <RoomItem room={boiler} Objects={Objects} season={'Spring'} dict={dict} />
-                        <RoomItem room={board} Objects={Objects} season={'Spring'} dict={dict} />
-                        <RoomItem room={vault} Objects={Objects} season={'Spring'} dict={dict} />
-                        <RoomItem room={joja} Objects={Objects} season={'Spring'} dict={dict} />
-                    </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="summer">
-                    <AccordionTrigger className="text-xl font-bold">Summer</AccordionTrigger>
-                    <AccordionContent>
-                        <RoomItem room={craftRoom} Objects={Objects} season={'Summer'} dict={dict} />
-                        <RoomItem room={pantry} Objects={Objects} season={'Summer'} dict={dict} />
-                        <RoomItem room={tank} Objects={Objects} season={'Summer'} dict={dict} />
-                        <RoomItem room={boiler} Objects={Objects} season={'Summer'} dict={dict} />
-                        <RoomItem room={board} Objects={Objects} season={'Summer'} dict={dict} />
-                        <RoomItem room={vault} Objects={Objects} season={'Summer'} dict={dict} />
-                        <RoomItem room={joja} Objects={Objects} season={'Summer'} dict={dict} />
-                    </AccordionContent>
-                    </AccordionItem>
-                    <AccordionItem value="fall">
-                    <AccordionTrigger className="text-xl font-bold">Fall</AccordionTrigger>
-                    <AccordionContent>
-                        <RoomItem room={craftRoom} Objects={Objects} season={'Fall'} dict={dict} />
-                        <RoomItem room={pantry} Objects={Objects} season={'Fall'} dict={dict} />
-                        <RoomItem room={tank} Objects={Objects} season={'Fall'} dict={dict} />
-                        <RoomItem room={boiler} Objects={Objects} season={'Fall'} dict={dict} />
-                        <RoomItem room={board} Objects={Objects} season={'Fall'} dict={dict} />
-                        <RoomItem room={vault} Objects={Objects} season={'Fall'} dict={dict} />
-                        <RoomItem room={joja} Objects={Objects} season={'Fall'} dict={dict} />
-                    </AccordionContent>
-                    </AccordionItem>
-                    <AccordionItem value="winter">
-                    <AccordionTrigger className="text-xl font-bold">Winter</AccordionTrigger>
-                    <AccordionContent>
-                        <RoomItem room={craftRoom} Objects={Objects} season={'Winter'} dict={dict} />
-                        <RoomItem room={pantry} Objects={Objects} season={'Winter'} dict={dict} />
-                        <RoomItem room={tank} Objects={Objects} season={'Winter'} dict={dict} />
-                        <RoomItem room={boiler} Objects={Objects} season={'Winter'} dict={dict} />
-                        <RoomItem room={board} Objects={Objects} season={'Winter'} dict={dict} />
-                        <RoomItem room={vault} Objects={Objects} season={'Winter'} dict={dict} />
-                        <RoomItem room={joja} Objects={Objects} season={'Winter'} dict={dict} />
-                    </AccordionContent>
-                </AccordionItem>
-            </Accordion>}
 
         </div>
     )
@@ -89,10 +83,10 @@ function SortBy({ Objects, craftRoom, pantry, tank, boiler, board, vault, joja, 
 
 export { SortBy };
 
-function RoomItem({ room, Objects, season, dict }: { room: any, Objects: any, season?: string, dict: Record<string, boolean> }) {
+function RoomItem({ room, Objects, season, type, dict }: { room: any, Objects: any, season?: Array<string>, type?: Array<string>, dict: Record<string, boolean> }) {
     return (
         <AccordionItem value={room}>
-            <AccordionTrigger className={`${season ? "text-lg px-5" : "text-xl font-bold"}`}>{room[0].room}</AccordionTrigger>
+            <AccordionTrigger className={"text-xl font-bold"}>{room[0].room}</AccordionTrigger>
             <AccordionContent>
                 {room.map((b: any) => (
                     <Accordion type="multiple" className="px-10">
@@ -108,7 +102,7 @@ function RoomItem({ room, Objects, season, dict }: { room: any, Objects: any, se
                                     </div>
                                 </ul>
                                 <ul>
-                                    {Objects.filter((item: any) => item.bundle === b.bundle && (!season || item.season.includes(season))).map((item: { name: Key | null | undefined; }) => (
+                                    {Objects.filter((item: any) => item.bundle === b.bundle && (!season || season.length == 0 || season.includes(item.season) || item.season.split(',').some((r: string)=>season.includes(r))) && (!type || type.length == 0 || type.includes(item.type) || item.type.split(',').some((r: string)=>type.includes(r)))).map((item: { name: Key | null | undefined; }) => (
                                         <BundleItem key={item.name} item={item} dict={dict} />
                                     ))}
                                 </ul>
