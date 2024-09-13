@@ -84,17 +84,36 @@ function SortBy({ Objects, craftRoom, pantry, tank, boiler, board, vault, joja, 
 export { SortBy };
 
 function RoomItem({ room, Objects, season, type, dict }: { room: any, Objects: any, season?: Array<string>, type?: Array<string>, dict: Record<string, boolean> }) {
+    const [isFinished, setIsFinished] = useState<Record<string, boolean>>({});
+
+    const handleBundleChange = (b: string) => {
+        var count = 0;
+        for (const i in dict) {
+            if (i.includes(b) && dict[i] == true) {
+                count++;
+            }
+        }
+
+        const updatedIsFinished = { ...isFinished };
+        if (count > 3) {
+            updatedIsFinished[b] = true;
+        } else {
+            updatedIsFinished[b] = false;
+        }
+        setIsFinished(updatedIsFinished);
+    };
+    
     return (
         <AccordionItem value={room}>
-            <AccordionTrigger className={"text-xl font-bold"}>{room[0].room}</AccordionTrigger>
+            <AccordionTrigger className={`text-xl font-bold`}>{room[0].room}</AccordionTrigger>
             <AccordionContent>
                 {room.map((b: any) => (
-                    <Accordion type="multiple" className="px-10">
-                        <AccordionItem value={b.bundle}>
-                            <AccordionTrigger className="text-base">{b.bundle}</AccordionTrigger>
-                            <AccordionContent>
+                    <Accordion type="multiple" className="md:px-10">
+                        <AccordionItem value={b.bundle} onClick={() => handleBundleChange(b.bundle)} className={`${isFinished[b.bundle] ? "opacity-50" : ""} `}>
+                            <AccordionTrigger className={`text-base`}>{b.bundle}</AccordionTrigger>
+                            <AccordionContent className="overflow-auto">
                                 <ul>
-                                    <div className="grid items-center grid-cols-4">
+                                    <div className="overflow-x-auto grid items-center grid-cols-4 flex">
                                         <p className="grid-item"></p>
                                         <p className="font-bold grid-item text-center">Location</p>
                                         <p className="font-bold grid-item text-center">Type</p>

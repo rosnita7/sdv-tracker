@@ -1,22 +1,7 @@
-import Image from "next/image";
-import { Checkbox } from "@/components/ui/checkbox"
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
-import { Button } from "@/components/ui/button"
-import { getObjects, getBundles } from "../lib/data"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
-import BundleItem from '@/components/client-component'
-import {SortBy, RoomItem} from '@/components/client-component'
+import { getObjects, getBundles } from "../lib/data"
+
+import {SortBy} from '@/components/client-component'
 
 
 
@@ -36,7 +21,7 @@ export default async function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col p-24">
+    <main className="flex min-h-screen flex-col md:px-24 md:py-10 p-5">
       <SortBy Objects={Objects} craftRoom = {craftRoom} pantry = {pantry} tank = {tank} boiler = {boiler} board = {board} vault = {vault} joja = {joja} dict = {dict} />
     </main>
 
