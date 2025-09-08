@@ -95,8 +95,55 @@ function RoomItem({ room, Objects, season, type, dict }: { room: any, Objects: a
         }
 
         const updatedIsFinished = { ...isFinished };
-        if (count > 3) {
+        /* 
+        TODO: fix key error for 5k bundle
+        */
+       //vault
+        if (count === 1 && (b === '2,500' || b === '5,000' || b === '10,000' || b=== '25,000')) {
             updatedIsFinished[b] = true;
+
+        //crafts room
+        } else if (count == 3 && (b==='Construction' || b === 'Summer Foraging')) {
+            updatedIsFinished[b] = true;
+        } else if (count > 4 && b==='Exotic Foraging') {
+            updatedIsFinished[b] = true;
+        } else if (count > 3 && room[0].room ==='Crafts Room' && b !== 'Exotic Foraging') {
+            updatedIsFinished[b] = true;
+
+        //pantry
+        } else if (count >= 3 && b === 'Quality Crops') {
+            updatedIsFinished[b] = true;
+        } else if (count >= 5 && b === 'Animal') {
+            updatedIsFinished[b] = true;
+        } else if (count >= 6 && b === 'Artisan') {
+            updatedIsFinished[b] = true;
+        } else if (count >= 4 && b.includes('Crops')) {
+            updatedIsFinished[b] = true;
+
+        //fish tank
+        } else if (count == 3 && b === 'Night Fishing') {
+            updatedIsFinished[b] = true;
+        } else if (count >= 5 && b === 'Crab Pot') {
+            updatedIsFinished[b] = true;
+        } else if (count >= 4 && b.includes('Fish')) {
+            updatedIsFinished[b] = true;
+        
+        //boiler room
+        } else if (count >= 2 && b === 'Adventurer') {
+            updatedIsFinished[b] = true;
+        } else if (count >= 3 && b === 'Blacksmith') {
+            updatedIsFinished[b] = true;
+        } else if (count >= 4 && b === 'Geologist') {
+            updatedIsFinished[b] = true;
+        
+        //bulletin board
+        } else if (count >= 3 && b === 'Fodder') {
+            updatedIsFinished[b] = true;
+        } else if (count >= 4 && (b === 'Field Research' || b === 'Enchanter')) {
+            updatedIsFinished[b] = true;
+        } else if (count > 5 && room[0].room === 'Bulletin Board') {
+            updatedIsFinished[b] = true;
+        
         } else {
             updatedIsFinished[b] = false;
         }
@@ -109,7 +156,7 @@ function RoomItem({ room, Objects, season, type, dict }: { room: any, Objects: a
             <AccordionContent>
                 {room.map((b: any) => (
                     <Accordion type="multiple" className="md:px-10">
-                        <AccordionItem value={b.bundle} onClick={() => handleBundleChange(b.bundle)} className={`${isFinished[b.bundle] ? "opacity-50" : ""} `}>
+                        <AccordionItem value={b.bundle} onClick={() => handleBundleChange(b.bundle)} className={`${isFinished[b.bundle] ? "opacity-50" : ""} transition-opacity`}>
                             <AccordionTrigger className={`text-base`}>{b.bundle}</AccordionTrigger>
                             <AccordionContent className="overflow-auto">
                                 <ul>
